@@ -11,14 +11,13 @@ const port = process.env.PORT || 5000
 const publicDirectory = path.join(__dirname, '../public')
 app.use(express.static(publicDirectory))
 
-let count = 0
-io.on('connect',(socket) => {
-    console.log('a new websocket connection..')
-    socket.emit('countUpdated', count)
 
-    socket.on('increment', () => {
-        count++
-    io.emit('countUpdated', count)
+io.on('connection',(socket) => {
+    console.log('a new websocket connection..')
+    socket.emit('message', 'Welcome!')
+
+    socket.on('sendMessage', (message) => {
+    io.emit('message', message)
     })
 })
 
